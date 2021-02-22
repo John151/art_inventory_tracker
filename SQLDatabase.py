@@ -41,6 +41,14 @@ def add_artist(artist):
         print('Error adding artist', e)
         return False
 
+# show all artwork for 1 artist that's available
+def get_all_artwork_by_artist(artistID):
+    get_all_artwork_by_one_artist = 'SELECT * FROM artwork WHERE artistID = ?'
+    with sqlite3.connect(db_path) as conn:
+        rows = conn.execute(get_all_artwork_by_one_artist, (artistID, )).fetchall()
+    conn.close()
+    return rows
+
 # show all artists
 def get_all_artists():
     pass
@@ -56,17 +64,16 @@ def add_artwork(artwork):
         with sqlite3.connect(db_path) as conn:
             conn.execute(add_new_artwork, (artwork.title, artwork.price, artwork.available, artwork.artistID))
 
-# show all artwork for all artists
-def get_artwork():
-    pass
-
-# show all artwork for 1 artist that's available
-def get_all_artwork_by_artist():
-    pass
-
 # delete artwork
-def delete_artwork():
-    pass
+def delete_artwork(artworkID):
+    delete_an_artwork = 'DELETE FROM artwork WHERE artworkID = ?'
+    try:
+        with sqlite3.connect(db_path) as conn:
+            conn.execute(delete_an_artwork, (artworkID, ))
+        conn.close()
+        return True
+    except Exception as e:
+        print('Delete artwork error\n' + e)
 
 # change availability of artwork
 def toggle_artwork_availability(artwork):
@@ -77,5 +84,5 @@ def toggle_artwork_availability(artwork):
         conn.close()
         return True
     except Exception as e:
-        print('Error adding artwork', e)
+        print('Error changing artwork availability\n' + e)
         return False

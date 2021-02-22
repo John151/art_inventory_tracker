@@ -40,5 +40,6 @@ class TestDB(TestCase):
         conn.close()
         return rows
 
+
 if __name__ == '__main__':
     unittest.main()

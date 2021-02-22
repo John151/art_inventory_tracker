@@ -23,8 +23,12 @@ def add_new_artist():
 
 
 def search_for_artwork_by_artist():
-    # TODO function to search for artwork by artist name
-    a = 1
+    list_all_artists()
+    print('Refer to the list and enter artist\'s ID to display all of their artwork')
+    artistID = int(input('Please enter the artist ID: '))
+    rows = db.get_all_artwork_by_artist(artistID)
+    for row in rows:
+        print(row)
 
 def list_all_artists():
     # TODO function to list all artists by name
@@ -36,6 +40,7 @@ def add_new_artwork():
             title = input('Enter artwork\'s title: ')
             price = round(float(input('Enter artwork\'s price: ', 2)))
             available = input('Artwork is currently available (y/n)? ')
+            # TODO turn y into 1 n into 0, mind cases
             # print artist's names and id's
             artistID = input('Enter artist\'s ID: ')
 
@@ -51,8 +56,8 @@ def add_new_artwork():
         print('ERROR - Add artwork error')
 
 def delete_artwork():
-    #  TODO function to delete an artwork
-    a = 1
+    delete_artwork = ''
+
 
 def change_availibility_of_artwork():
     artworkID = input('Enter artwork\'s ID: ')
