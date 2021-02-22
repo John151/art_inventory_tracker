@@ -38,7 +38,7 @@ def add_artist(artist):
         conn.close()
         return True
     except Exception as e:
-        print('some error', e)
+        print('Error adding artist', e)
         return False
 
 # show all artists
@@ -50,17 +50,32 @@ def delete_artist():
     pass
 
 # add artwork
-def add_artwork():
-    pass
+def add_artwork(artwork):
+    add_new_artwork = 'INSERT INTO artwork VALUES (?, ?, ?, ?)'
+    try:
+        with sqlite3.connect(db_path) as conn:
+            conn.execute(add_new_artwork, (artwork.title, artwork.price, artwork.available, artwork.artistID))
 
-# show all artwork for 1 artist
+# show all artwork for all artists
 def get_artwork():
     pass
 
-# show all artwork for all artists
-def get_all_artwork():
+# show all artwork for 1 artist that's available
+def get_all_artwork_by_artist():
     pass
 
 # delete artwork
 def delete_artwork():
     pass
+
+# change availability of artwork
+def toggle_artwork_availability(artwork):
+    change_availability = 'UPDATE artwork SET available = ? WHERE artworkID = ?'
+    try:
+        with sqlite3.connect(db_path) as conn:
+            conn.execute(change_availability, (artwork.available, artwork.artworkID))
+        conn.close()
+        return True
+    except Exception as e:
+        print('Error adding artwork', e)
+        return False
