@@ -29,7 +29,7 @@ def create_tables():
 
 # add artist
 def add_artist(artist):
-    add_new_artist = 'INSERT INTO artists (name, email) VALUES (?, ?)'
+    add_new_artist = 'INSERT INTO artists VALUES (?, ?)'
     try:
         with sqlite3.connect(db_path) as conn:
             conn.execute(add_new_artist, (artist.name, artist.email))
@@ -48,10 +48,17 @@ def get_all_artwork_by_artist(artistID):
 
 # show all artists
 def get_all_artists():
-    get_all_artists = 'SELECT * FROM artists'
+    get_all_artists = 'SELECT ROWID, * FROM artists'
     conn = sqlite3.connect(db_path)
     rows = conn.execute(get_all_artists).fetchall()
     return rows
+
+def get_max_rowID():
+    get_latest_rowID = 'SELECT MAX(ROWID) FROM artists'
+    conn = sqlite3.connect(db_path)
+    artistID_return = conn.execute(get_latest_rowID).fetchone()
+    artistID = artistID_return[0]
+    return artistID
 
 # delete artist
 def delete_artist():
@@ -59,7 +66,7 @@ def delete_artist():
 
 # add artwork
 def add_artwork(artwork):
-    add_new_artwork = 'INSERT INTO artwork (title, price, available, artistID) VALUES (?, ?, ?, ?)'
+    add_new_artwork = 'INSERT INTO artwork VALUES (?, ?, ?, ?)'
     try:
         with sqlite3.connect(db_path) as conn:
             conn.execute(add_new_artwork, (artwork.title, artwork.price, artwork.available, artwork.artistID))

@@ -36,16 +36,31 @@ def list_all_artists():
     for row in results:
         print(row)
 
+def get_latest_artist_id():
+    latest_artist_id = db.get_max_rowID()
+    return latest_artist_id
+
 def add_new_artwork():
     while True:
         try:
             title = input('Enter artwork\'s title: ')
             price = round(float(input('Enter artwork\'s price: ', 2)))
-            available = input('Artwork is currently available (y/n)? ')
-            # TODO turn y into 1 n into 0, mind cases
-            # print artist's names and id's
-            artistID = input('Enter artist\'s ID: ')
-
+            while True:
+                try:
+                    available_character = input('Artwork is currently available (y/n)? ')
+                    if available_character.lower() == 'y':
+                        available = 1
+                        break
+                    elif available_character.lower() == 'n':
+                        available = 0
+                        break
+                except Exception as e:
+                    print('Please enter only \'y\' or \'n\'', e)
+            list_all_artists()
+            artistID = input('Enter artist\'s ID or nothing if artist is not yet listed: ')
+            if artistID == '':
+                add_new_artist()
+                artistID = get_latest_artist_id()
             break
         except Exception as e:
             print(e)
