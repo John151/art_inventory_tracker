@@ -7,19 +7,17 @@ def create_tables():
         # artist table
         create_artist_table = """ 
             CREATE TABLE IF NOT EXISTS artists (
-            artistID INTEGER PRIMARY KEY, 
-            name TEXT NOT NULL,
+            name TEXT UNIQUE,
             email TEXT
             )"""
         # artwork table
         create_artwork_table = """
             CREATE TABLE IF NOT EXISTS artwork (
-            artworkID INTEGER PRIMARY KEY, 
             title TEXT,
             price REAL,
             available INTEGER,
             artistID INTEGER,
-            FOREIGN KEY (artistID) REFERENCES artist(artistID)
+            FOREIGN KEY (artistID) REFERENCES artist(ROWID)
             )"""
         with sqlite3.connect(db_path) as conn:
             conn.execute(create_artist_table)
@@ -31,7 +29,7 @@ def create_tables():
 
 # add artist
 def add_artist(artist):
-    add_new_artist = 'INSERT INTO artists VALUES (?, ?)'
+    add_new_artist = 'INSERT INTO artists (name, email) VALUES (?, ?)'
     try:
         with sqlite3.connect(db_path) as conn:
             conn.execute(add_new_artist, (artist.name, artist.email))
@@ -61,10 +59,14 @@ def delete_artist():
 
 # add artwork
 def add_artwork(artwork):
-    add_new_artwork = 'INSERT INTO artwork VALUES (?, ?, ?, ?)'
+    add_new_artwork = 'INSERT INTO artwork (title, price, available, artistID) VALUES (?, ?, ?, ?)'
     try:
         with sqlite3.connect(db_path) as conn:
             conn.execute(add_new_artwork, (artwork.title, artwork.price, artwork.available, artwork.artistID))
+        conn.close()
+        return True
+    except Exception as e:
+        print('Error adding new artwork', e)
 
 # delete artwork
 def delete_artwork(artworkID):

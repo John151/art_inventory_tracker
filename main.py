@@ -21,7 +21,8 @@ def add_new_artist():
     else:
         print('ERROR - Add artist error')
 
-
+# searches for artists, lists them so user can see their options
+# asks for artistID, outputs results of artwork for that ID
 def search_for_artwork_by_artist():
     list_all_artists()
     print('Refer to the list and enter artist\'s ID to display all of their artwork')

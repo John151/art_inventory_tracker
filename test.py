@@ -21,19 +21,39 @@ class TestDB(TestCase):
             conn.execute('DELETE FROM artists')
         conn.close()
 
-    def test_add_artist(self):
+    def test_add_new_artist(self):
         # example 1 valid data
         example = Artist('Example', 'example@email.com')
-        added = db.add_artist(example)
 
+        added = db.add_artist(example)
         self.assertTrue(added)
 
         expected_rows = [('Example', 'example@email.com')]
         actual_rows = self.get_all_data()
-
         self.assertEqual(expected_rows, actual_rows)
 
+        # example 2 valid data
+        example2 = Artist('Example2', 'example@email.com')
 
+        added = db.add_artist(example2)
+        self.assertTrue(added)
+
+        expected_rows = [('Example', 'example@email.com'), ('Example2', 'example@email.com')]
+        actual_rows = self.get_all_data()
+        self.assertEqual(expected_rows, actual_rows)
+
+    def test_add_duplicate_artist(self):
+        example = Artist('Example', 'example@email.com')
+        added = db.add_artist(example)
+        self.assertTrue(added)
+
+        example2 = Artist('Example', 'different_example@email.com')
+        added2 = db.add_artist(example)
+        self.assertFalse(added2)
+
+        expected_rows = [('Example', 'example@email.com')]
+        actual_rows = self.get_all_data()
+        self.assertCountEqual(expected_rows, actual_rows)
 
     def get_all_data(self):
         with sqlite3.connect(test_db_path) as conn:
