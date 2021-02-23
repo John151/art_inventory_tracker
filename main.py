@@ -26,13 +26,14 @@ def search_for_artwork_by_artist():
     list_all_artists()
     print('Refer to the list and enter artist\'s ID to display all of their artwork')
     artistID = int(input('Please enter the artist ID: '))
-    rows = db.get_all_artwork_by_artist(artistID)
-    for row in rows:
+    results = db.get_all_artwork_by_artist(artistID)
+    for row in results:
         print(row)
 
 def list_all_artists():
-    # TODO function to list all artists by name
-    a = 1
+    results = db.get_all_artists()
+    for row in results:
+        print(row)
 
 def add_new_artwork():
     while True:

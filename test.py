@@ -22,6 +22,7 @@ class TestDB(TestCase):
         conn.close()
 
     def test_add_artist(self):
+        # example 1 valid data
         example = Artist('Example', 'example@email.com')
         added = db.add_artist(example)
 
